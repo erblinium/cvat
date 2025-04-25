@@ -274,3 +274,17 @@ questions and get our support.
 [doi-url]: https://zenodo.org/badge/latestdoi/139156354
 [discord-img]: https://img.shields.io/discord/1000789942802337834?label=discord
 [discord-url]: https://discord.gg/fNR3eXfk6C
+
+### Running local serverless
+
+First build modified cvat_ui image by running:
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml build cvat_ui
+```
+
+After build is finished run:
+```bash
+docker compose -f docker-compose.yml -f components/serverless/docker-compose.serverless.yml up
+```
+
+
