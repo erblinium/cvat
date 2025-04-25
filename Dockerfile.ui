@@ -15,6 +15,7 @@ COPY cvat-data/package.json /tmp/cvat-data/
 
 # Install common dependencies
 WORKDIR /tmp/
+RUN yarn config set "strict-ssl" false -g
 RUN DISABLE_HUSKY=1 yarn --frozen-lockfile
 
 # Build source code
