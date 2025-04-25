@@ -1231,7 +1231,7 @@ export class CanvasViewImpl implements CanvasView, Listener {
                             points = this.translatePointsFromRotatedShape(shape, points);
                         }
 
-                        this.onEditDone(state, this.translateFromCanvas(points));
+                        //this.onEditDone(state, this.translateFromCanvas(points));
                     }
 
                     this.canvas.dispatchEvent(
