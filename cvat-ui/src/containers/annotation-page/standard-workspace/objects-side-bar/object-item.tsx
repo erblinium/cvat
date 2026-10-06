@@ -36,6 +36,7 @@ import { Canvas3d } from 'cvat-canvas3d-wrapper';
 import { filterApplicableLabels } from 'utils/filter-applicable-labels';
 import { toClipboard } from 'utils/to-clipboard';
 import changeObjectOrientation, { type OrientationAngle } from 'utils/change-object-orientation';
+import flipSkeletonState from 'utils/flip-skeleton';
 
 interface OwnProps {
     clientID: number;
@@ -433,6 +434,13 @@ class ObjectItemContainer extends React.PureComponent<Props, State> {
         }
     };
 
+    private flipSkeleton = (): void => {
+        const { objectState } = this.props;
+        if (flipSkeletonState(objectState)) {
+            this.commit();
+        }
+    };
+
     private toBackground = (): void => {
         const { objectState, minZLayer } = this.props;
 
@@ -620,6 +628,7 @@ class ObjectItemContainer extends React.PureComponent<Props, State> {
                     propagate={this.propagate}
                     switchOrientation={this.switchOrientation}
                     changeOrientation={this.changeOrientation}
+                    flipSkeleton={this.flipSkeleton}
                     toBackground={this.toBackground}
                     toForeground={this.toForeground}
                     toOneLayerBackward={this.toOneLayerBackward}

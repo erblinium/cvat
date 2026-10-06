@@ -47,6 +47,7 @@ import {
 } from 'components/annotation-page/standard-workspace/objects-side-bar/drag-and-drop';
 import { openAnnotationsActionModal } from 'components/annotation-page/annotations-actions/annotations-actions-modal';
 import { OBJECTS_SIDEBAR_OPEN_Z_LAYER_EVENT } from 'utils/objects-sidebar';
+import flipSkeletonState from 'utils/flip-skeleton';
 
 interface StateToProps {
     jobInstance: any;
@@ -139,6 +140,12 @@ const componentShortcuts = {
         name: 'Switch outside',
         description: 'Change outside property for an active track',
         sequences: ['o'],
+        scope: ShortcutScope.OBJECTS_SIDEBAR,
+    },
+    FLIP_SKELETON: {
+        name: 'Flip skeleton',
+        description: 'Swap adjacent keypoints for an active skeleton',
+        sequences: ['shift+m'],
         scope: ShortcutScope.OBJECTS_SIDEBAR,
     },
     DELETE_OBJECT_STANDARD_WORKSPACE: {
@@ -663,6 +670,13 @@ class ObjectsListContainer extends React.PureComponent<Props, State> {
                 const state = activatedState();
                 if (state && (state.objectType === ObjectType.TRACK || state.parentID)) {
                     state.outside = !state.outside;
+                    updateAnnotations([state]);
+                }
+            },
+            FLIP_SKELETON: (event?: KeyboardEvent) => {
+                preventDefault(event);
+                const state = activatedState(true);
+                if (state && !state.lock && !state.isGroundTruth && flipSkeletonState(state)) {
                     updateAnnotations([state]);
                 }
             },

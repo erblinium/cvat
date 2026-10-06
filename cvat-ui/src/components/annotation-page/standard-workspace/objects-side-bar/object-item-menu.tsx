@@ -8,7 +8,7 @@ import Button from 'antd/lib/button';
 import { MenuProps } from 'antd/lib/menu';
 import Icon, {
     LinkOutlined, CopyOutlined, BlockOutlined, RetweetOutlined, DeleteOutlined, EditOutlined,
-    FunctionOutlined, VerticalAlignBottomOutlined,
+    FunctionOutlined, SwapOutlined, VerticalAlignBottomOutlined,
 } from '@ant-design/icons';
 
 import {
@@ -35,6 +35,7 @@ interface Props {
     pasteShortcut: string;
     sliceShortcut: string;
     propagateShortcut: string;
+    flipSkeletonShortcut: string;
     toBackgroundShortcut: string;
     toForegroundShortcut: string;
     toOneLayerBackwardShortcut: string;
@@ -49,6 +50,7 @@ interface Props {
     createURL(): void;
     switchOrientation(): void;
     changeOrientation(degrees: OrientationAngle): void;
+    flipSkeleton(): void;
     toBackground(): void;
     toForeground(): void;
     toOneLayerBackward(): void;
@@ -195,6 +197,23 @@ function SwitchOrientationItem(props: ItemProps): JSX.Element {
         >
             Switch orientation
         </Button>
+    );
+}
+
+function FlipSkeletonItem(props: ItemProps): JSX.Element {
+    const { toolProps } = props;
+    const { flipSkeleton, flipSkeletonShortcut } = toolProps;
+    return (
+        <CVATTooltip title={`Swap adjacent keypoints (0 and 1, 2 and 3, ...) ${flipSkeletonShortcut}`}>
+            <Button
+                type='link'
+                icon={<SwapOutlined />}
+                onClick={flipSkeleton}
+                className='cvat-object-item-menu-flip-skeleton'
+            >
+                Flip skeleton
+            </Button>
+        </CVATTooltip>
     );
 }
 
@@ -386,6 +405,7 @@ export default function ItemMenu(props: Props): MenuProps {
         COPY = 'copy',
         PROPAGATE = 'propagate',
         SWITCH_ORIENTATION = 'switch_orientation',
+        FLIP_SKELETON = 'flip_skeleton',
         ORIENTATION = 'orientation',
         RESET_PERSPECTIVE = 'reset_perspective',
         TO_BACKGROUND = 'to_background',
@@ -451,6 +471,13 @@ export default function ItemMenu(props: Props): MenuProps {
         items.push({
             key: MenuKeys.SWITCH_ORIENTATION,
             label: <SwitchOrientationItem toolProps={props} />,
+        });
+    }
+
+    if (is2D && !locked && shapeType === ShapeType.SKELETON) {
+        items.push({
+            key: MenuKeys.FLIP_SKELETON,
+            label: <FlipSkeletonItem toolProps={props} />,
         });
     }
 

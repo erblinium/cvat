@@ -162,6 +162,100 @@ context('Manipulations with skeletons', { scrollBehavior: false }, () => {
             cy.removeAnnotations();
         });
 
+        it('Shift+M flips adjacent skeleton keypoints and is undoable', () => {
+            createSkeletonObject('shape');
+
+            cy.get('#cvat_canvas_shape_1 > circle[data-client-id]').then(($points) => {
+                const initialCoordinates = [...$points].map((point) => [
+                    Number(point.getAttribute('cx')),
+                    Number(point.getAttribute('cy')),
+                ]);
+                const flippedOrder = [1, 0, 3, 2, 4];
+
+                cy.get('body').trigger('keydown', {
+                    keyCode: 77,
+                    code: 'KeyM',
+                    shiftKey: true,
+                });
+
+                flippedOrder.forEach((initialIndex, pointIndex) => {
+                    cy.get(`#cvat_canvas_shape_${pointIndex + 2}`).should(($point) => {
+                        expect([
+                            Number($point.attr('cx')),
+                            Number($point.attr('cy')),
+                        ]).to.deep.equal(initialCoordinates[initialIndex]);
+                    });
+                });
+
+                cy.get('.cvat-annotation-header-undo-button').click();
+                initialCoordinates.forEach((coordinates, pointIndex) => {
+                    cy.get(`#cvat_canvas_shape_${pointIndex + 2}`).should(($point) => {
+                        expect([
+                            Number($point.attr('cx')),
+                            Number($point.attr('cy')),
+                        ]).to.deep.equal(coordinates);
+                    });
+                });
+            });
+
+            cy.removeAnnotations();
+        });
+
+        it('Flipping a skeleton transfers visibility to the opposite keypoint', () => {
+            createSkeletonObject('shape');
+
+            const outsidePointSelector = '#cvat-objects-sidebar-state-item-element-2';
+            const oppositePointSelector = '#cvat-objects-sidebar-state-item-element-3';
+            cy.get(outsidePointSelector).within(() => {
+                cy.get('.cvat-object-item-button-outside').click();
+                cy.get('.cvat-object-item-button-outside-enabled').should('exist');
+            });
+
+            cy.get('#cvat_canvas_shape_1 > circle[data-client-id]').then(($points) => {
+                const initialCoordinates = [...$points].map((point) => [
+                    Number(point.getAttribute('cx')),
+                    Number(point.getAttribute('cy')),
+                ]);
+                const flippedOrder = [1, 0, 3, 2, 4];
+
+                cy.get('#cvat-objects-sidebar-state-item-1')
+                    .find('.cvat-object-item-menu-button').click();
+                cy.get('.cvat-object-item-menu:visible')
+                    .find('.cvat-object-item-menu-flip-skeleton').click();
+
+                flippedOrder.forEach((initialIndex, pointIndex) => {
+                    cy.get(`#cvat_canvas_shape_${pointIndex + 2}`).should(($point) => {
+                        expect([
+                            Number($point.attr('cx')),
+                            Number($point.attr('cy')),
+                        ]).to.deep.equal(initialCoordinates[initialIndex]);
+                    });
+                });
+                cy.get(outsidePointSelector)
+                    .find('.cvat-object-item-button-outside-enabled').should('not.exist');
+                cy.get(oppositePointSelector)
+                    .find('.cvat-object-item-button-outside-enabled').should('exist');
+                cy.get('#cvat_canvas_shape_2').should('not.have.class', 'cvat_canvas_hidden');
+                cy.get('#cvat_canvas_shape_3').should('have.class', 'cvat_canvas_hidden');
+
+                cy.get('.cvat-annotation-header-undo-button').click();
+                initialCoordinates.forEach((coordinates, pointIndex) => {
+                    cy.get(`#cvat_canvas_shape_${pointIndex + 2}`).should(($point) => {
+                        expect([
+                            Number($point.attr('cx')),
+                            Number($point.attr('cy')),
+                        ]).to.deep.equal(coordinates);
+                    });
+                });
+                cy.get(outsidePointSelector)
+                    .find('.cvat-object-item-button-outside-enabled').should('exist');
+                cy.get(oppositePointSelector)
+                    .find('.cvat-object-item-button-outside-enabled').should('not.exist');
+            });
+
+            cy.removeAnnotations();
+        });
+
         it('Creating, checking occluded for a single point, and removing a skeleton shape', () => {
             createSkeletonObject('shape');
 

@@ -116,6 +116,7 @@ interface Props {
     copyShortcut: string;
     pasteShortcut: string;
     propagateShortcut: string;
+    flipSkeletonShortcut: string;
     toBackgroundShortcut: string;
     toForegroundShortcut: string;
     toOneLayerBackwardShortcut: string;
@@ -132,6 +133,7 @@ interface Props {
     createURL(): void;
     switchOrientation(): void;
     changeOrientation(degrees: OrientationAngle): void;
+    flipSkeleton(): void;
     toBackground(): void;
     toOneLayerBackward(): void;
     toForeground(): void;
@@ -160,6 +162,7 @@ function ItemTopComponent(props: Props): JSX.Element {
         copyShortcut,
         pasteShortcut,
         propagateShortcut,
+        flipSkeletonShortcut,
         toBackgroundShortcut,
         toForegroundShortcut,
         toOneLayerBackwardShortcut,
@@ -177,6 +180,7 @@ function ItemTopComponent(props: Props): JSX.Element {
         createURL,
         switchOrientation,
         changeOrientation,
+        flipSkeleton,
         toBackground,
         toForeground,
         toOneLayerBackward,
@@ -250,6 +254,7 @@ function ItemTopComponent(props: Props): JSX.Element {
                         copyShortcut,
                         pasteShortcut,
                         propagateShortcut,
+                        flipSkeletonShortcut,
                         toBackgroundShortcut,
                         toForegroundShortcut,
                         toOneLayerBackwardShortcut,
@@ -266,6 +271,7 @@ function ItemTopComponent(props: Props): JSX.Element {
                         createURL,
                         switchOrientation,
                         changeOrientation,
+                        flipSkeleton,
                         toBackground,
                         toForeground,
                         toOneLayerBackward,

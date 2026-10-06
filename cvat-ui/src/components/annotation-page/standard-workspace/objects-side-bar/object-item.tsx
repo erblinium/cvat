@@ -40,6 +40,7 @@ interface Props {
     propagate(): void;
     switchOrientation(): void;
     changeOrientation(degrees: OrientationAngle): void;
+    flipSkeleton(): void;
     createURL(): void;
     toBackground(): void;
     toForeground(): void;
@@ -81,6 +82,7 @@ function ObjectItemComponent(props: Props): JSX.Element {
         createURL,
         switchOrientation,
         changeOrientation,
+        flipSkeleton,
         toBackground,
         toForeground,
         toOneLayerForward,
@@ -138,6 +140,7 @@ function ObjectItemComponent(props: Props): JSX.Element {
                     copyShortcut={normalizedKeyMap.COPY_SHAPE}
                     pasteShortcut={normalizedKeyMap.PASTE_SHAPE}
                     propagateShortcut={normalizedKeyMap.PROPAGATE_OBJECT}
+                    flipSkeletonShortcut={normalizedKeyMap.FLIP_SKELETON}
                     toBackgroundShortcut={normalizedKeyMap.TO_BACKGROUND}
                     toForegroundShortcut={normalizedKeyMap.TO_FOREGROUND}
                     toOneLayerBackwardShortcut={normalizedKeyMap.TO_ONE_LAYER_BACKWARD}
@@ -155,6 +158,7 @@ function ObjectItemComponent(props: Props): JSX.Element {
                     createURL={createURL}
                     switchOrientation={switchOrientation}
                     changeOrientation={changeOrientation}
+                    flipSkeleton={flipSkeleton}
                     toBackground={toBackground}
                     toForeground={toForeground}
                     toOneLayerBackward={toOneLayerBackward}
