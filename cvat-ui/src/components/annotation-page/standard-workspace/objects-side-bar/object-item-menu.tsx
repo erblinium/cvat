@@ -204,7 +204,7 @@ function FlipSkeletonItem(props: ItemProps): JSX.Element {
     const { toolProps } = props;
     const { flipSkeleton, flipSkeletonShortcut } = toolProps;
     return (
-        <CVATTooltip title={`Swap adjacent keypoints (0 and 1, 2 and 3, ...) ${flipSkeletonShortcut}`}>
+        <CVATTooltip title={`Swap paired skeleton keypoints ${flipSkeletonShortcut}`}>
             <Button
                 type='link'
                 icon={<SwapOutlined />}
